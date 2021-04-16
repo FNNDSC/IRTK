@@ -1,0 +1,19 @@
+# DOES NOT WORK
+
+FROM docker.io/nvidia/cuda:11.2.2-devel-ubuntu20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update
+# libvtk6-dev needs to be installed by itself, or else you get an error:
+# libvtk6-dev : Depends: libgdal-dev but it is not going to be installed
+RUN apt-get install -y libvtk6-dev
+RUN apt-get install -y libfltk1.3-dev libgsl-dev libboost1.67-dev libgtest-dev cmake
+# for Nvidia build, need GLUT
+RUN apt-get install -y freeglut3-dev
+
+
+WORKDIR /usr/local/bin/src
+COPY . .
+
+ARG j=8
+RUN mkdir build && cd build && cmake -DBUILD_GPU_SUPPORT_WITH_CUDA=ON .. && make -j ${j}

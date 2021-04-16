@@ -1,3 +1,0 @@
-[submodule "gtest"]
-	path = gtest
-	url = https://gitlab.doc.ic.ac.uk/jpassera/google-test-mirror.git
